@@ -1,0 +1,13 @@
+groups:
+  - name: quantidadeDeErros
+    rules:
+      - alert: quantidadeDeErrosHttpAcimaDaMedia
+        expr: rate(http_server_requests_seconds_count{status="500"}[1m]) > 0.5
+        for: 10m
+        labels:
+          app: bancodigital
+          severity: warning
+        annotations:
+          title: Quantidade de erros do http
+          summary: Quantidade de erros total
+          description: Quantidade de erros que ultrapassaram a média de 50 por cento.

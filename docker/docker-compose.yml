@@ -25,6 +25,8 @@ services:
     volumes:
       - prometheus-volume:/etc/prometheus/
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./alerts_rules.yml:/etc/prometheus/alerts_rules.yml
+      - ./alert2.yml:/etc/prometheus/alert2.yml
     ports:
       - "9090:9090"
     networks:
@@ -32,6 +34,17 @@ services:
     depends_on:
       - bancodigital
       - db
+  alertmanager:
+    image: prom/alertmanager:v0.23.0
+    restart: unless-stopped
+    ports:
+      - "9093:9093"
+    networks:
+      - metricas
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager.yml
+      - alertmanager-data:/etc/alertmanager/data
+    command: --config.file=/etc/alertmanager/alertmanager.yml --log.level=debug
   grafana:
     image: grafana/grafana
     volumes:
@@ -48,6 +61,7 @@ services:
 volumes:
   grafana-volume:
   prometheus-volume:
+  alertmanager-data:
 
 networks:
   metricas:

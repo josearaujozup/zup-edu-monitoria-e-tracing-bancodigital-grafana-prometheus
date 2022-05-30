@@ -1,0 +1,13 @@
+groups:
+  - name: bancodigital
+    rules:
+      - alert: altoUsoDaCPU
+        expr: system_cpu_usage >= 0.1
+        for: 5m
+        labels:
+          app: bancodigital
+          severity: critical
+        annotations:
+          title: Alto uso da CPU
+          summary: A CPU atingiu um nível alto de uso.
+          description: A CPU atingiu uma taxa de uso elevado durante 5 minutos.
